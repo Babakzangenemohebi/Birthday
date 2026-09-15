@@ -2,7 +2,7 @@
   const AUDIO_API='https://discoveryprovider.audius.co/v1';
   let musicAudio=null;
   function boot(){
-    document.body.insertAdjacentHTML('afterbegin',`<div class="app-loader" id="appLoader" aria-label="در حال آماده‌سازی"><div class="loader-box"><div style="position:relative;width:94px;height:94px;margin:auto"><div class="loader-ring"></div><div class="loader-logo">🔭</div></div><div class="loader-title">رنگِ درون من</div><div class="loader-sub">در حال آماده‌سازی تجربهٔ تولد...</div></div></div>`);
+    document.body.insertAdjacentHTML('afterbegin',`<div class="app-loader" id="appLoader" aria-label="در حال آماده‌سازی"><div class="loader-box"><div class="loader-logo-wrap"><div class="loader-ring"></div><img class="loader-logo-img" src="zad-logo.svg" alt="زاد"></div><div class="loader-title">زاد</div><div class="loader-sub">در حال آماده‌سازی تجربهٔ تولد...</div></div></div>`);
     const panels=[...document.querySelectorAll('main.page > section')];
     const hero=document.querySelector('.hero'), birth=hero?.nextElementSibling;
     const history=panels.find(x=>x.querySelector('#historyCard'));
@@ -35,7 +35,7 @@
     }
     nav.addEventListener('click',e=>{const b=e.target.closest('.app-tab');if(b)activate(b.dataset.tab)});
     setupMusic();
-    setTimeout(()=>document.getElementById('appLoader')?.classList.add('hide'),650);
+    setTimeout(()=>document.getElementById('appLoader')?.classList.add('hide'),900);
   }
   async function setupMusic(){
     const old=document.getElementById('soundBtn');
