@@ -3,10 +3,11 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#eefaff">
 <title>راز رنگ تولد | رنگِ درون من</title>
-<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="style.css?v=7">
 <style>
 .birth-date-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}.date-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:14px}.date-meta-card{padding:12px;border-radius:15px;background:#f8fafc;border:1px solid #eef2f6;text-align:center}.date-meta-card b{display:block;font-size:11px;color:#98a2b3;margin-bottom:4px}.date-meta-card span{font-weight:800;font-size:13px}.birth-year-label{display:block;font-weight:800;margin:0 0 9px}.advanced-note{margin-top:12px;padding:11px 13px;border-radius:14px;background:#eef8ff;color:#667085;font-size:11px;line-height:1.9}.age-badge{display:inline-block;margin-top:8px;padding:5px 10px;border-radius:999px;background:#eef2ff;color:#4f46e5;font-size:11px;font-weight:800}.result-date-line{font-size:14px;color:#667085;margin:2px 0 4px}.result-date-line strong{color:#101828}.birth-year-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}body.dark .date-meta-card{background:#171c2e;border-color:#ffffff10}.dark .advanced-note{background:#151d31;color:#aeb8c8}.dark .result-date-line strong{color:#f8fafc}@media(max-width:560px){.birth-date-grid,.birth-year-grid{grid-template-columns:1fr 1fr}.birth-date-grid>div:first-child{grid-column:1/-1}.date-meta{grid-template-columns:1fr}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
 </head>
 <body>
 <div class="aurora"></div>
@@ -28,12 +29,12 @@
 <div class="actions"><button class="share" onclick="shareResult()">📤 اشتراک‌گذاری</button><button class="download" onclick="downloadCard()">🖼️ دانلود کارت JPG</button></div>
 </div>
 </section>
-<section class="glass tool-panel"><h2>🔭 آسمان روز تولد</h2><p>فاز ماه با تاریخ و سال واقعی تولد محاسبه می‌شود. برای نقشهٔ واقعی ستاره‌ها و سیارات، ساعت و مختصات محل تولد لازم است.</p><div class="sky-card" id="skyCard"></div></section>
+<section class="glass tool-panel"><h2>🔭 آسمان لحظهٔ تولد</h2><p>حالا این بخش یک نقشهٔ واقعی و تعاملی آسمان است: زمان محلی، مختصات جغرافیایی، خورشید، ماه و سیارات را روی افق همان محل محاسبه می‌کند.</p><div class="sky-card" id="skyCard"></div></section>
 <section class="glass tool-panel"><h2>🧠 سه چهرهٔ مشهورِ هم‌تاریخ</h2><p>برای هر تاریخ میلادی، سه مورد از داده‌های تولدِ استخراج‌شده از ویکی‌پدیا به‌صورت آنلاین بارگذاری می‌شود.</p><div class="famous-list" id="famousList"></div></section>
 <section class="glass tool-panel"><h2>🔎 پیدا کردن یک رنگ</h2><p>اسم رنگ، ویژگی یا کد HEX را جستجو کن.</p><input class="search" id="searchBox" placeholder="مثلاً سبز روشن، طراوت یا #90EE90" oninput="searchColors()"><div id="searchResults" class="search-results"></div></section>
 <section class="glass tool-panel"><h2>💑 مقایسه دو تولد</h2><div class="compare-grid"><div><label>تولد اول</label><div class="selectors"><select class="select" id="cm1"></select><select class="select" id="cd1"></select></div></div><div><label>تولد دوم</label><div class="selectors"><select class="select" id="cm2"></select><select class="select" id="cd2"></select></div></div></div><button class="show small" onclick="compareDates()">💞 مقایسه رنگ‌ها</button><div id="compareResult"></div></section>
 <section class="glass tool-panel"><h2>🎵 فضای صفحه</h2><p>صدای ظریف کشف رنگ را روشن یا خاموش کن.</p><button class="sound" id="soundBtn" onclick="toggleSound()">🔊 صدا روشن است</button></section>
 <div class="footer">هر روز، هر تاریخ، یک داستان. ✨</div>
 </main><div class="toast" id="toast"></div>
-<script src="script.js?v=6"></script>
+<script src="script.js?v=6"></script><script src="sky.js?v=1"></script>
 </body></html>
