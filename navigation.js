@@ -1,4 +1,4 @@
-/* کارت‌های دسترسی سریع به بخش‌های صفحه */
+/* کارت‌های دسترسی سریع؛ فقط در انتهای صفحهٔ خانه */
 (function(){
   const items=[
     ['result','🎨','رنگ تولد','رنگ و ویژگی روز'],
@@ -10,10 +10,15 @@
     ['soundBtn','🎵','فضای صفحه','صدا و حال‌وهوا']
   ];
   function setup(){
-    const birth=document.querySelector('.panel'); if(!birth||document.getElementById('quickNav'))return;
-    const nav=document.createElement('nav');nav.id='quickNav';nav.className='quick-nav';nav.setAttribute('aria-label','دسترسی سریع به اطلاعات');
-    nav.innerHTML='<div class="quick-nav-title">⚡ انتخاب کن چه چیزی می‌خواهی ببینی</div><div class="quick-nav-grid">'+items.map((x,i)=>`<button class="quick-nav-card" data-target="${x[0]}"><span class="quick-nav-icon">${x[1]}</span><strong>${x[2]}</strong><small>${x[3]}</small><span class="quick-nav-arrow">←</span></button>`).join('')+'</div>';
-    birth.after(nav);
+    const birth=document.querySelector('.panel');
+    const footer=document.querySelector('.footer');
+    if(!birth||document.getElementById('quickNav'))return;
+    const nav=document.createElement('nav');
+    nav.id='quickNav';
+    nav.className='quick-nav app-view active home-only';
+    nav.setAttribute('aria-label','دسترسی سریع به اطلاعات');
+    nav.innerHTML='<div class="quick-nav-title">⚡ انتخاب کن چه چیزی می‌خواهی ببینی</div><div class="quick-nav-grid">'+items.map(x=>`<button class="quick-nav-card" data-target="${x[0]}"><span class="quick-nav-icon">${x[1]}</span><strong>${x[2]}</strong><small>${x[3]}</small><span class="quick-nav-arrow">←</span></button>`).join('')+'</div>';
+    if(footer) footer.before(nav); else document.querySelector('main.page')?.appendChild(nav);
     nav.querySelectorAll('button').forEach(btn=>btn.addEventListener('click',()=>{
       const target=document.getElementById(btn.dataset.target); if(!target)return;
       const section=target.closest('section')||target.closest('.result')||target;
