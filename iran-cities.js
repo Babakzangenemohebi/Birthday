@@ -1,35 +1,52 @@
-/* فهرست شهرهای ایران + مختصات خودکار برای نقشه آسمان */
+/* فهرست شهرهای ایران + انتخاب سریع با تب استان و جستجوی زنده */
 (function(){
   const DATA_URL='https://raw.githubusercontent.com/arnpacc/iran-city-coordinates/main/geographic_coordinates_of_cities_in_iran.json';
   const $=id=>document.getElementById(id);
+  let data=[];
   function setupCities(){
     const city=$('skyCity'),lat=$('skyLat'),lon=$('skyLon'),offset=$('skyOffset');
     if(!city||!lat||!lon)return;
-    city.outerHTML='<select id="skyCity" aria-label="شهر محل تولد"><option value="">در حال دریافت فهرست شهرها…</option></select>';
-    const select=$('skyCity');
+    const field=city.closest('.sky-field');
+    if(!field)return;
+    field.innerHTML=`<label>📍 شهر / شهرستان</label><div class="city-picker" id="cityPicker"><div class="city-search-wrap"><span>🔎</span><input id="skyCity" class="city-search" autocomplete="off" placeholder="جستجوی شهر یا شهرستان…" aria-label="جستجوی شهر یا شهرستان"><button type="button" id="cityClear" class="city-clear" aria-label="پاک کردن">×</button></div><div id="cityPanel" class="city-panel"><div class="city-tabs" id="cityTabs"></div><div class="city-results" id="cityResults"></div></div></div>`;
     lat.closest('.sky-field')?.classList.add('sky-auto-location');
     lon.closest('.sky-field')?.classList.add('sky-auto-location');
     offset?.closest('.sky-field')?.classList.add('sky-auto-location');
-    fetch(DATA_URL).then(r=>{if(!r.ok)throw new Error('cities');return r.text()}).then(t=>JSON.parse(t.replace(/^\uFEFF/,''))).then(provinces=>{
-      select.innerHTML='<option value="">شهر محل تولد را انتخاب کن</option>';
-      (provinces||[]).forEach(p=>{
-        const cities=Array.isArray(p.cities)?p.cities.filter(c=>Number.isFinite(Number(c.latitude))&&Number.isFinite(Number(c.longitude))):[];
-        if(!cities.length)return;
-        const group=document.createElement('optgroup');group.label=p.province||'';
-        cities.sort((a,b)=>String(a.name).localeCompare(String(b.name),'fa')).forEach(c=>{
-          const o=document.createElement('option');o.value=c.name;o.textContent=c.name;o.dataset.lat=c.latitude;o.dataset.lon=c.longitude;o.dataset.province=p.province||'';group.appendChild(o);
-        });
-        select.appendChild(group);
-      });
-      const tehran=[...select.options].find(o=>o.textContent==='تهران');if(tehran){select.value=tehran.value;applyCity()}
-    }).catch(()=>{select.innerHTML='<option value="تهران">تهران</option>';select.value='تهران';lat.value='35.6944';lon.value='51.4215';applyCity()});
-    select.addEventListener('change',applyCity);
-    function applyCity(){
-      const o=select.options[select.selectedIndex];
-      if(o?.dataset.lat){lat.value=o.dataset.lat;lon.value=o.dataset.lon;select.title=`${o.dataset.province||'ایران'} · ${Number(o.dataset.lat).toFixed(4)}°، ${Number(o.dataset.lon).toFixed(4)}°`}
-      if(offset)offset.value='3.5';
+    const input=$('skyCity'),panel=$('cityPanel'),tabs=$('cityTabs'),results=$('cityResults');
+    let active='همه';
+    function norm(s){return String(s||'').replace(/[يى]/g,'ی').replace(/ك/g,'ک').replace(/ۀ/g,'ه').trim().toLowerCase()}
+    function allCities(){return data.flatMap(p=>(p.cities||[]).filter(c=>Number.isFinite(Number(c.latitude))&&Number.isFinite(Number(c.longitude))).map(c=>({...c,province:p.province||''})))}
+    function applyCity(c){
+      input.value=c.name;lat.value=c.latitude;lon.value=c.longitude;if(offset)offset.value='3.5';
+      input.dataset.province=c.province||'';input.dataset.lat=c.latitude;input.dataset.lon=c.longitude;
+      panel.classList.remove('open');
+      input.dispatchEvent(new Event('input',{bubbles:true}));
     }
-    const hint=document.querySelector('.sky-hint');if(hint)hint.textContent='شهر محل تولد را انتخاب کن؛ مختصات جغرافیایی و منطقهٔ زمانی ایران خودکار تنظیم می‌شود. فقط ساعت محلی تولد را وارد کن.';
+    function renderTabs(){
+      const provinces=['همه',...data.map(p=>p.province).filter(Boolean)];
+      tabs.innerHTML=provinces.map(p=>`<button type="button" class="city-tab ${p===active?'active':''}" data-province="${p}">${p}</button>`).join('');
+      tabs.querySelectorAll('.city-tab').forEach(b=>b.onclick=()=>{active=b.dataset.province;renderTabs();renderResults(input.value)});
+    }
+    function renderResults(q=''){
+      const query=norm(q);let rows=allCities();
+      if(active!=='همه')rows=rows.filter(c=>c.province===active);
+      if(query)rows=rows.filter(c=>norm(c.name).includes(query)||norm(c.province).includes(query));
+      rows.sort((a,b)=>String(a.name).localeCompare(String(b.name),'fa'));
+      if(!rows.length){results.innerHTML='<div class="city-empty">شهری با این عبارت پیدا نشد.</div>';return}
+      results.innerHTML=rows.slice(0,80).map(c=>`<button type="button" class="city-option" data-name="${String(c.name).replace(/"/g,'&quot;')}" data-province="${String(c.province).replace(/"/g,'&quot;')}" data-lat="${c.latitude}" data-lon="${c.longitude}"><span>📍</span><span><b>${c.name}</b><small>${c.province}</small></span></button>`).join('');
+      results.querySelectorAll('.city-option').forEach(b=>b.onclick=()=>applyCity({name:b.dataset.name,province:b.dataset.province,latitude:b.dataset.lat,longitude:b.dataset.lon}));
+    }
+    function open(){panel.classList.add('open');renderTabs();renderResults(input.value)}
+    input.addEventListener('focus',open);input.addEventListener('input',()=>{open();renderResults(input.value)});
+    $('cityClear').onclick=()=>{input.value='';input.focus();renderResults('')};
+    document.addEventListener('click',e=>{if(!field.contains(e.target))panel.classList.remove('open')});
+    fetch(DATA_URL).then(r=>{if(!r.ok)throw new Error('cities');return r.text()}).then(t=>JSON.parse(t.replace(/^\uFEFF/,''))).then(provinces=>{
+      data=Array.isArray(provinces)?provinces:[];
+      const tehran=allCities().find(c=>c.name==='تهران')||allCities()[0];
+      if(tehran)applyCity(tehran);
+      renderTabs();renderResults('');
+    }).catch(()=>{data=[{province:'تهران',cities:[{name:'تهران',latitude:35.6944,longitude:51.4215}]}];const tehran=allCities()[0];applyCity(tehran);renderTabs();renderResults('')});
+    const hint=document.querySelector('.sky-hint');if(hint)hint.textContent='استان را از تب‌ها انتخاب کن یا نام شهر/شهرستان را جستجو کن؛ با انتخاب نتیجه، مختصات و منطقهٔ زمانی خودکار تنظیم می‌شود.';
   }
   document.addEventListener('DOMContentLoaded',()=>setTimeout(setupCities,80));
 })();
