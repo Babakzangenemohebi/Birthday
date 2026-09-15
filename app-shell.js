@@ -16,13 +16,12 @@
     [history,sky,famous,search,compare,sound].forEach(x=>{if(x)x.classList.add('app-view')});
     hero.dataset.app='home';birth.dataset.app='home';
     if(history)history.dataset.app='history';if(sky)sky.dataset.app='sky';if(famous)famous.dataset.app='famous';if(search)search.dataset.app='search';if(compare)compare.dataset.app='compare';if(sound)sound.dataset.app='sound';
-    hero.insertAdjacentHTML('afterend',`<div class="home-shortcuts"><button class="home-shortcut" data-go="sky"><i>🔭</i><b>آسمان تولد</b><span>آسمان واقعی لحظه تولد</span></button><button class="home-shortcut" data-go="history"><i>📜</i><b>در چنین روزی</b><span>رویدادهای واقعی تاریخ</span></button><button class="home-shortcut" data-go="famous"><i>🧠</i><b>چهره‌های هم‌تاریخ</b><span>سه چهره مشهور</span></button><button class="home-shortcut" data-go="search"><i>🎨</i><b>جستجوی رنگ</b><span>رنگ و HEX</span></button></div>`);
     const nav=document.createElement('nav');nav.className='app-tabs';nav.setAttribute('aria-label','ناوبری اصلی');
     const tabs=[['home','⌂','خانه'],['history','📜','تاریخ'],['sky','🔭','آسمان'],['famous','👤','چهره‌ها'],['more','☷','بیشتر']];
     nav.innerHTML=tabs.map(t=>`<button class="app-tab ${t[0]==='home'?'active':''}" data-tab="${t[0]}"><span class="app-tab-icon">${t[1]}</span><span class="app-tab-label">${t[2]}</span></button>`).join('');document.body.appendChild(nav);
     function activate(tab){
       let targets=[];
-      if(tab==='home')targets=[hero,birth,document.querySelector('.home-shortcuts')];
+      if(tab==='home')targets=[hero,birth];
       else if(tab==='history')targets=[history];
       else if(tab==='sky')targets=[sky];
       else if(tab==='famous')targets=[famous];
@@ -30,11 +29,9 @@
       panels.forEach(x=>x.classList.remove('active'));hero.classList.remove('active');birth.classList.remove('active');
       document.querySelectorAll('.app-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));
       targets.filter(Boolean).forEach(x=>x.classList.add('active'));
-      document.querySelectorAll('.home-shortcuts').forEach(x=>x.style.display=tab==='home'?'grid':'none');
       window.scrollTo({top:0,behavior:'smooth'});
     }
     nav.addEventListener('click',e=>{const b=e.target.closest('.app-tab');if(b)activate(b.dataset.tab)});
-    document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)activate(b.dataset.go)});
     setTimeout(()=>document.getElementById('appLoader')?.classList.add('hide'),650);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
