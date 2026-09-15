@@ -1,0 +1,1 @@
+window.addEventListener('load',()=>{setTimeout(()=>document.getElementById('appLoader')?.classList.add('hide'),450)});
