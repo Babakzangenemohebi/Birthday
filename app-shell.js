@@ -10,6 +10,8 @@
     const compare=panels.find(x=>x.querySelector('#compareResult'));
     const sound=panels.find(x=>x.querySelector('#soundBtn'));
     if(!birth)return;
+    /* Home must start with the birth-date action. */
+    if(hero && birth)birth.before(hero);
     panels.forEach(x=>x.classList.add('app-view'));
     hero.classList.add('app-view','active');
     birth.classList.add('app-view','active','home-panel');
@@ -21,7 +23,7 @@
     nav.innerHTML=tabs.map(t=>`<button class="app-tab ${t[0]==='home'?'active':''}" data-tab="${t[0]}"><span class="app-tab-icon">${t[1]}</span><span class="app-tab-label">${t[2]}</span></button>`).join('');document.body.appendChild(nav);
     function activate(tab){
       let targets=[];
-      if(tab==='home')targets=[hero,birth];
+      if(tab==='home')targets=[birth,hero];
       else if(tab==='history')targets=[history];
       else if(tab==='sky')targets=[sky];
       else if(tab==='famous')targets=[famous];
