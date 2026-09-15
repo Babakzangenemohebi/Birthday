@@ -3,28 +3,31 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#eefaff">
 <title>راز رنگ تولد | رنگِ درون من</title>
-<link rel="stylesheet" href="style.css?v=3">
+<link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
 <div class="aurora"></div>
 <main class="page">
-<section class="hero"><button class="theme" id="themeBtn" onclick="toggleTheme()">🌙</button><div class="logo">🎨</div><span class="eyebrow">✦ راز رنگ تولد ✦</span><h1>رنگِ درون من</h1><p>ماه و روز تولدت رو انتخاب کن و رنگ، ویژگی و انرژی مخصوص خودت رو کشف کن.</p></section>
+<section class="hero"><button class="theme" id="themeBtn" onclick="toggleTheme()">🌙</button><div class="logo">🎨</div><span class="eyebrow">✦ راز رنگ تولد ✦</span><h1>رنگِ درون من</h1><p>ماه و روز تولدت رو انتخاب کن و رنگ، ویژگی و اطلاعات علمی مرتبط با اون تاریخ رو کشف کن.</p></section>
 <section class="glass panel">
 <label class="label">تاریخ تولد</label>
 <div class="selectors"><div class="select-wrap"><select class="select" id="month"><option value="">ماه را انتخاب کن</option></select></div><div class="select-wrap"><select class="select" id="day"><option value="">روز را انتخاب کن</option></select></div></div>
 <button class="show" onclick="showResult()">✨ کشف رنگ من</button>
 <div class="quick"><button onclick="randomDate()">🎲 تاریخ تصادفی</button><button onclick="document.getElementById('searchBox').focus()">🔍 جستجوی رنگ</button></div>
-<p class="hint">سال لازم نیست؛ فقط ماه و روز تولد کافیه.</p>
+<p class="hint">سال لازم نیست؛ برای داده‌های نجومی، سایت معادل همین تاریخ در سال جاری را بررسی می‌کند.</p>
 <div class="result" id="result">
 <div class="mini">رنگ مخصوص تو</div><div class="orb" id="orb"></div><div class="date" id="date"></div><div class="color" id="color"></div><div class="hex" id="hex"></div><div class="trait" id="trait"></div><div class="desc" id="desc"></div>
 <div class="stats" id="stats"></div>
+<div class="science-grid" id="scienceGrid"></div>
 <div class="actions"><button class="share" onclick="shareResult()">📤 اشتراک‌گذاری</button><button class="download" onclick="downloadCard()">🖼️ دانلود کارت JPG</button></div>
 </div>
 </section>
+<section class="glass tool-panel"><h2>🔭 آسمان این تاریخ</h2><p>فاز ماه بر اساس معادل میلادی تاریخ در سال جاری محاسبه می‌شود؛ موقعیت دقیق ستاره‌ها به ساعت و مکان رصد وابسته است.</p><div class="sky-card" id="skyCard"></div></section>
+<section class="glass tool-panel"><h2>🧠 متولدین شناخته‌شده این تاریخ</h2><p>چند چهره علمی و تاریخی که با معادل میلادی این تاریخ، روز تولد مشترک دارند.</p><div class="famous-list" id="famousList"></div></section>
 <section class="glass tool-panel"><h2>🔎 پیدا کردن یک رنگ</h2><p>اسم رنگ، ویژگی یا کد HEX را جستجو کن.</p><input class="search" id="searchBox" placeholder="مثلاً سبز روشن، طراوت یا #90EE90" oninput="searchColors()"><div id="searchResults" class="search-results"></div></section>
 <section class="glass tool-panel"><h2>💑 مقایسه دو تولد</h2><div class="compare-grid"><div><label>تولد اول</label><div class="selectors"><select class="select" id="cm1"></select><select class="select" id="cd1"></select></div></div><div><label>تولد دوم</label><div class="selectors"><select class="select" id="cm2"></select><select class="select" id="cd2"></select></div></div></div><button class="show small" onclick="compareDates()">💞 مقایسه انرژی دو نفر</button><div id="compareResult"></div></section>
 <section class="glass tool-panel"><h2>🎵 فضای صفحه</h2><p>صدای ظریف کشف رنگ را روشن یا خاموش کن.</p><button class="sound" id="soundBtn" onclick="toggleSound()">🔊 صدا روشن است</button></section>
 <div class="footer">هر روز، یک رنگ. هر رنگ، یک داستان. ✨</div>
 </main><div class="toast" id="toast"></div>
-<script src="script.js?v=3"></script>
+<script src="script.js?v=4"></script>
 </body></html>
